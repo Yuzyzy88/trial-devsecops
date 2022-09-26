@@ -10,7 +10,7 @@ pipeline {
             steps {
                 sh '''
                 docker image rm sulistiowatiayu/devsecops:v1 || echo "No existing image found"
-                docker compose build --no-cache -f app/deploy/docker-compose.yaml
+                docker compose -f app/deploy/docker-compose.yaml build --no-cache
 
                 '''
             }
@@ -28,8 +28,8 @@ pipeline {
         stage('Run the docker compose') {
             steps {
                 sh '''
-                docker compose stop -d -f app/deploy/docker-compose.yaml
-                docker compose up -d -f app/deploy/docker-compose.yaml
+                docker compose -f app/deploy/docker-compose.yaml stop -d
+                docker compose -f app/deploy/docker-compose.yaml up -d
                 '''
             }
         }
