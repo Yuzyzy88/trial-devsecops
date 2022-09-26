@@ -10,7 +10,8 @@ pipeline {
             steps {
                 sh '''
                 docker image rm sulistiowatiayu/devsecops:v1 || echo "No existing image found"
-                docker build --no-cache -t sulistiowatiayu/devsecops:v1 -f app/deploy/Dockerfile app/
+                docker compose build --no-cache -f app/deploy/docker-compose.yaml
+
                 '''
             }
         }
@@ -24,11 +25,11 @@ pipeline {
                 '''
             }
         }
-        stage('Deploy image') {
+        stage('Run the docker compose') {
             steps {
                 sh '''
-                (docker stop carmanagment && docker rm carmanagment) || echo "No existing container running";
-                docker run -p 3000:80 -d --name carmanagment sulistiowatiayu/devsecops:v1
+                docker compose stop -d -f app/deploy/docker-compose.yaml
+                docker compose up -d -f app/deploy/docker-compose.yaml
                 '''
             }
         }
