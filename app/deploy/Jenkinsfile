@@ -10,7 +10,7 @@ pipeline {
             steps {
                 sh '''
                 docker image rm sulistiowatiayu/devsecops:v1 || echo "No existing image found"
-                docker build --no-cache -t sulistiowatiayu/devsecops:v1 . 
+                docker build --no-cache -t sulistiowatiayu/devsecops:v1 app/deploy/
                 '''
             }
         }
