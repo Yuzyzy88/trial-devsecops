@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        
+
         stage('Create Image') {
             steps {
                 sh '''
@@ -17,7 +17,7 @@ pipeline {
                 cd app/
                 mkdir /var/www/html/trivy/pipeline${BUILD_NUMBER}/
                 touch /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportconfig.html
-                trivy config . --format template --template "@deploy/html.tpl" -o /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportconfig.html --severity HIGH,CRITICAL
+                trivy config . --format template --template "@deploy/html.tpl" -o /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportconfig.html --severity HIGH,CRITICAL --ignore-unfixed
                 '''
             }
         }
@@ -27,7 +27,7 @@ pipeline {
                 sh '''
                 cd app/
                 touch /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportfilesystem.html
-                trivy fs . --format template --template "@deploy/html.tpl" -o /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportfilesystem.html --severity HIGH,CRITICAL
+                trivy fs . --format template --template "@deploy/html.tpl" -o /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportfilesystem.html --severity HIGH,CRITICAL --ignore-unfixed
                 '''
             }
         }
@@ -37,10 +37,10 @@ pipeline {
                 sh '''
                 cd app/deploy
                 touch /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportimagesecretpython.html
-                trivy image --format template --template "@html.tpl" -o /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportimagesecretpython.html --severity HIGH,CRITICAL 10.8.60.126:5000/devsecops:v${BUILD_NUMBER}
+                trivy image --format template --template "@html.tpl" -o /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportimagesecretpython.html --severity HIGH,CRITICAL --ignore-unfixed 10.8.60.126:5000/devsecops:v${BUILD_NUMBER}
                 
                 touch /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportimagesecretdb.html
-                trivy image --format template --template "@html.tpl" -o /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportimagesecretdb.html --severity HIGH,CRITICAL mariadb:10.6.3
+                trivy image --format template --template "@html.tpl" -o /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportimagesecretdb.html --severity HIGH,CRITICAL --ignore-unfixed mariadb:10.6.3 
                 '''
             }
         }
