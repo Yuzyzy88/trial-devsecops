@@ -1,11 +1,15 @@
 pipeline {
     agent any
     stages {
+
+
         // stage('SCM Checkout') {
         //     steps {
         //         checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CleanBeforeCheckout', deleteUntrackedNestedRepositories: true]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'github-login', url: 'https://github.com/Yuzyzy88/trial-devsecops.git']]])
         //     }
         // }
+
+        
         stage('Create Image') {
             steps {
                 sh '''
@@ -32,15 +36,6 @@ pipeline {
                 cd app/
                 touch /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportfilesystem.html
                 trivy fs . --format template --template "@deploy/html.tpl" -o /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportfilesystem.html --severity HIGH,CRITICAL
-                '''
-            }
-        }
-
-         stage("Docker Compose and Rootfs Scanner"){
-            steps{
-                sh '''
-                cd app/deploy/
-                docker-compose up -d
                 '''
             }
         }
