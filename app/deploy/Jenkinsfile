@@ -10,8 +10,7 @@ pipeline {
             steps {
                 sh '''
                 docker image rm 10.8.60.126:5000/devsecops:v1 || echo "No existing image found"
-                docker compose -f app/deploy/docker-compose.yaml build --no-cache
-
+                docker compose --app/deploy/docker-compose.yaml build --no-cache
                 '''
             }
         }
