@@ -9,19 +9,19 @@ pipeline {
         stage('Create Image') {
             steps {
                 sh '''
-                docker image rm sulistiowatiayu/devsecops:v1 || echo "No existing image found"
+                docker image rm 10.8.60.126:5000/devsecops:v1 || echo "No existing image found"
                 docker compose -f app/deploy/docker-compose.yaml build --no-cache
 
                 '''
             }
         }
-        stage('Push Image') {
+        stage('Push Image to nexus') {
             steps {
                 sh '''
                 set +x
-                docker login --username=sulistiowatiayu --password=$dockerPassword
+                docker login --username=admin --password=$nexusPassword 10.8.60.126:5000
                 set -x
-                docker push sulistiowatiayu/devsecops:v1
+                docker push 10.8.60.126:5000/devsecops:${BUILD_NUMBER}
                 '''
             }
         }
