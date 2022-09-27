@@ -10,4 +10,4 @@ RUN pip install -r requirements.txt
 COPY src/ /app
 
 EXPOSE 10007
-CMD ["python", "/app/routes.py"]
+CMD ["python", "routes.py"]
