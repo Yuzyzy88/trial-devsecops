@@ -19,4 +19,4 @@ RUN trivy --format template --template "@html.tpl" -o reportrootfs.html --severi
 
 
 EXPOSE 10007
-CMD ["python", "routes.py"]
+#CMD ["python", "routes.py"]
