@@ -6,8 +6,7 @@ pipeline {
         // check docker file
         stage("Misconfig Scanner"){
             steps{
-                sh '''
-                #!/bin/bash
+                sh '''#!/bin/bash
                 whoami
                 cd app/
                 mkdir /var/www/html/trivy/pipeline${BUILD_NUMBER}/
