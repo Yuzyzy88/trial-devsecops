@@ -2,15 +2,8 @@ pipeline {
     agent any
     stages {
 
-        stage('Create Image') {
-            steps {
-                sh '''
-                docker image rm 10.8.60.126:5000/devsecops:v${BUILD_NUMBER} || echo "No existing image found"
-                docker-compose -f app/deploy/docker-compose.yaml build --no-cache
-                '''
-            }
-        }
 
+        // check docker file
         stage("Misconfig Scanner"){
             steps{
                 sh '''
@@ -19,9 +12,10 @@ pipeline {
                 touch /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportconfig.html
                 trivy config . --format template --template "@deploy/html.tpl" -o /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportconfig.html --severity HIGH,CRITICAL
                 '''
-            }
+            } 
         }
 
+        // scan keamanan dependency yang dibutuhkan docker file
          stage("Filesystem Scanner"){
             steps{
                 sh '''
@@ -32,6 +26,18 @@ pipeline {
             }
         }
 
+        stage('Create Image') {
+            steps {
+                sh '''
+                docker image rm 10.8.60.126:5000/devsecops:v${BUILD_NUMBER} || echo "No existing image found"
+                docker-compose -f app/deploy/docker-compose.yaml build --no-cache
+                '''
+            }
+        }
+
+        
+
+        // scan image
         stage("Vulnerability and Secret Scanner"){
             steps{
                 sh '''
