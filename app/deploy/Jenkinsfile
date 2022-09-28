@@ -6,12 +6,13 @@ pipeline {
         // check docker file
         stage("Misconfig Scanner"){
             steps{
-                sh'trivy'
                 sh '''
+                #!/bin/bash
                 whoami
                 cd app/
                 mkdir /var/www/html/trivy/pipeline${BUILD_NUMBER}/
                 touch /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportconfig.html
+                trivy
                 '''
             } 
         }
