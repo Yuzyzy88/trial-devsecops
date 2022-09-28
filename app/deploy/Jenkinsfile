@@ -2,7 +2,7 @@ pipeline {
     agent any
     stages {
 
-
+        //trivy config . --format template --template "@deploy/html.tpl" -o /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportconfig.html --severity HIGH,CRITICAL
         // check docker file
         stage("Misconfig Scanner"){
             steps{
@@ -10,8 +10,7 @@ pipeline {
                 cd app/
                 mkdir /var/www/html/trivy/pipeline${BUILD_NUMBER}/
                 touch /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportconfig.html
-                ifconfig
-                trivy config . --format template --template "@deploy/html.tpl" -o /var/www/html/trivy/pipeline${BUILD_NUMBER}/reportconfig.html --severity HIGH,CRITICAL
+                trivy
                 '''
             } 
         }
